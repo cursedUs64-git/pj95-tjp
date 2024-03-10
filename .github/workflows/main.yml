@@ -26,6 +26,7 @@ jobs:
           chmod +x tools/ido5.3_compiler/usr/bin/*
           chmod +x tools/ido5.3_compiler/usr/lib/*
           chmod +x tools/ido5.3_compiler/lib/*
+          chmod +x *
           sudo apt install build-essential pkg-config git binutils-mips-linux-gnu python3 zlib1g-dev libaudiofile-dev libcapstone-dev
     - name: Compile
       run: make -j VERSION=jp
