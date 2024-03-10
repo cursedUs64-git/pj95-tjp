@@ -29,7 +29,7 @@ jobs:
           chmod +x *
           sudo apt install build-essential pkg-config git binutils-mips-linux-gnu python3 zlib1g-dev libaudiofile-dev libcapstone-dev
     - name: Compile
-      run: make -j VERSION=jp
+      run: make -j
     - name: Publish Artifact
       uses: actions/upload-artifact@v2.2.4
       with:
