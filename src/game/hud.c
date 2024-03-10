@@ -259,14 +259,13 @@ void render_hud_power_meter(void) {
 #else
 #define HUD_TOP_Y 210
 #endif
-
 /**
  * Renders the amount of lives Mario has.
  */
 void render_hud_mario_lives(void) {
-    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, ","); // 'Mario Head' glyph
-    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(52), HUD_TOP_Y, "%d", gHudDisplay.lives);
+    print_text(31, 210, ","); // 'Mario Head' glyph
+    print_text(47, 210, "*"); // 'X' glyph
+    print_text_fmt_int(61, 210, "%d", gHudDisplay.lives);
 }
 #ifdef VERSION_JP
 #define HUD_STARS_X 73
@@ -277,9 +276,9 @@ void render_hud_mario_lives(void) {
  * Renders the amount of coins collected.
  */
 void render_hud_coins(void) {
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), HUD_TOP_Y, "+"); // 'Coin' glyph
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X) + 16, HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X - 30), HUD_TOP_Y, "%d", gHudDisplay.coins);
+    print_text(172, 193, "+"); // 'Coin' glyph
+    print_text(188, 193, "*"); // 'X' glyph
+    print_text_fmt_int(202, 193, "%d", gHudDisplay.coins);
 }
 
 /**
@@ -287,16 +286,10 @@ void render_hud_coins(void) {
  * Disables "X" glyph when Mario has 100 stars or more.
  */
 void render_hud_stars(void) {
-
-    if (gHudFlash == 1 && gGlobalTimer & 0x08) {
-        return;
-    }
-
-    print_text(168, HUD_TOP_Y, "-"); // 'Star' glyph
-    print_text(184, HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(198, HUD_TOP_Y, "%d", gHudDisplay.stars);
+    print_text(172, 210, "-"); // 'Star' glyph
+    print_text(188, 210, "*"); // 'X' glyph
+    print_text_fmt_int(202, 210, "%d", gHudDisplay.stars);
 }
-
 /**
  * Unused function that renders the amount of keys collected.
  * Leftover function from the beta version of the game.
