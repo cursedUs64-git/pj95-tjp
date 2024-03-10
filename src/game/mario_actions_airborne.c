@@ -472,50 +472,29 @@ s32 act_double_jump(struct MarioState *m) {
 }
 
 s32 act_triple_jump(struct MarioState *m) {
-	    s32 animation = (m->actionArg == 0 ? MARIO_ANIM_START_FORWARD_SPINNING
-: MARIO_ANIM_FORWARD_SPINNING);
-		if (is_anim_past_end(m)) {
-        m->actionArg = 1;
-		}
-		set_mario_animation(m, animation);
-    if (gSpecialTripleJump) {
-        return set_mario_action(m, ACT_SPECIAL_TRIPLE_JUMP, 0);
-    }
-    if (m->input & INPUT_B_PRESSED) {
-        return set_mario_action(m, ACT_DIVE, 0);
-    }
-
-    if (m->input & INPUT_Z_PRESSED) {
-        return set_mario_action(m, ACT_GROUND_POUND, 0);
+    if (m->vel[1] < 0.0f) {
+        return set_mario_action(m, ACT_TWIRLING, 0);
     }
 
     play_mario_sound(m, SOUND_ACTION_TERRAIN_JUMP, SOUND_MARIO_YAHOO);
+    set_mario_animation(m, MARIO_ANIM_DOUBLE_JUMP_RISE);
 
-    update_air_without_turn(m);
+    m->angleVel[1] = approach_s32(m->angleVel[1], 0x1100, 0x200, 0x200);
+    m->twirlYaw += m->angleVel[1];
+
+    update_lava_boost_or_twirling(m);
 
     switch (perform_air_step(m, 0)) {
-        case AIR_STEP_LANDED:
-            if (m->actionState++ == 0) {
-			set_mario_action(m, ACT_FORWARD_ROLLOUT, 0);
-            } else {
-                set_mario_action(m, ACT_FREEFALL_LAND_STOP, 0);
-            }
-            play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
-            break;
-
         case AIR_STEP_HIT_WALL:
-            mario_bonk_reflection(m, TRUE);
+            mario_bonk_reflection(m, FALSE);
+            break;
+
+        case AIR_STEP_HIT_LAVA_WALL:
+            lava_boost_on_wall(m);
             break;
     }
 
-    if (m->actionState == 0 || m->vel[1] > 0.0f) {
-        if (is_anim_past_end(m)){
-            play_sound(SOUND_ACTION_SPIN, m->marioObj->header.gfx.cameraToObject);
-        }
-    } else {
-        set_mario_animation(m, MARIO_ANIM_GENERAL_FALL);
-    }
-
+    m->marioObj->header.gfx.angle[1] += m->twirlYaw;
     return FALSE;
 }
 
